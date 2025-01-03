@@ -31,6 +31,11 @@ const Slider: React.FC<SliderProps> = ({
                 <RadixSlider.Range 
                     className="absolute bg-white rounded-full h-full"
                 />
+
+                <RadixSlider.Thumb
+                    className="absolute w-2 h-2 bg-white rounded-full shadow-lg focus:outline-none focus:ring focus:ring-offset focus:ring-white"
+                    style={{ top: "50%", transform: "translateY(-30%)" }}
+                />
             </RadixSlider.Track>
         </RadixSlider.Root>
     );
