@@ -22,9 +22,10 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
 }) => {
     const player = usePlayer();
     const [volume, setVolume] = useState(1);
+    const [previousVolume, setPreviousVolume] = useState(1);
     const [isPlaying, setIsPlaying] = useState(false);
 
-    const Icon = true ? BsPauseFill : BsPlayFill;
+    const Icon = isPlaying ? BsPauseFill : BsPlayFill;
     const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
 
     const onPlayNext = () => {
@@ -89,8 +90,9 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
 
     const toggleMute = () => {
         if (volume === 0) {
-            setVolume(1);
+            setVolume(previousVolume || 1);
         } else {
+            setPreviousVolume(volume);
             setVolume(0);
         }
     }    
