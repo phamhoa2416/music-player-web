@@ -1,4 +1,4 @@
-"use cient"
+"use client"
 
 import MediaItem from "@/components/MediaItem";
 import { Song } from "@/types";
