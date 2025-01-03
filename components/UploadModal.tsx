@@ -19,6 +19,14 @@ const UploadModal = () => {
     const supabaseClient = useSupabaseClient();
     const router = useRouter();
 
+    const sanitizeFilename = (filename: string) => {
+        return filename
+            .normalize("NFD") 
+            .replace(/[\u0300-\u036f]/g, "") 
+            .replace(/[^a-z0-9]/gi, '_')
+            .toLowerCase();   
+    }
+
     const {
         register,
         handleSubmit,
@@ -52,12 +60,13 @@ const UploadModal = () => {
             }
 
             const uniqueId = uniqid();
+            const sanitizeTitle = sanitizeFilename(values.title);
 
             const {
                 data: songData,
                 error: songError,
 
-            } = await supabaseClient.storage.from('songs').upload(`song-${values.title}-${uniqueId}`, songFile, {
+            } = await supabaseClient.storage.from('songs').upload(`song-${sanitizeTitle}-${uniqueId}`, songFile, {
                 cacheControl: '3600',
                 upsert: false
             });
@@ -70,12 +79,13 @@ const UploadModal = () => {
             const {
                 data: imageData,
                 error: imageError,
-            } = await supabaseClient.storage.from('images').upload(`image-${values.title}-${uniqueId}`, imageFile, {
+            } = await supabaseClient.storage.from('images').upload(`image-${sanitizeTitle}-${uniqueId}`, imageFile, {
                 cacheControl: '3600',
                 upsert: false
             });
 
             if (imageError) {
+                console.log(imageError);
                 setIsLoading(false);
                 return toast.error("Tải hình ảnh không thành công");
             }
